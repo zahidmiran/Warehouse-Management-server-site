@@ -174,6 +174,47 @@ async function run() {
       })
 
       
+    /* -------------- */
+    app.get("/myCollectedStocks", async(req, res) =>{
+        const deleveredStocks = await deleveryCollection.find({}).toArray();
+        res.send(deleveredStocks);
+    })
+
+
+    // delet
+    app.delete('/myItems/:id',async(req, res)=>{
+      const id= req.params.id;
+      const filter = { _id: ObjectId(id)};
+      const result = await deleveryCollection.deleteOne(filter);
+      res.send(result);
+
+
+
+  })
+
+    // update 
+    app.put('/inventorie/:id',async (req, res)=>{
+        const id = req.params.id;
+        const data = req.body;
+        console.log('from put' ,data);
+        const filter = { _id: ObjectId(id)};
+        const options = { upsert: true };
+        const updateDoc = {
+            $set: {
+              name: data.name, 
+              quantity : data.quantity
+  
+            },
+          };
+        const result = await inventoryCollection.updateOne(filter, updateDoc, options);
+        res.send(result);
+  
+  
+  
+  
+    })
+  
+
 
 
 app.get('/', (req, res) => {
