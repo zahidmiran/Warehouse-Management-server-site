@@ -18,6 +18,13 @@ const uri = `mongodb+srv://${process.env.USER}:${process.env.PASS}@cluster0.1ktn
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
 
+async function run() {
+    try {
+      await client.connect();
+      const inventoryCollection = client.db('inventoriesdb').collection('stocks');
+      const deleveryCollection = client.db('inventoriesdb').collection('deleveredStocks');
+      const partnersCollection = client.db('inventoriesdb').collection('partners');
+  
 
 
 
