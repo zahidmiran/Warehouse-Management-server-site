@@ -232,7 +232,7 @@ async function run() {
   run().catch(console.dir);
   
   app.get('/', (req, res) => {
-    res.send('Hello World! I missed the Batch Ifter party Because of This Assignment?? But what allah done is the best for me?? Happy Coding')
+    res.send('Hello World! Happy Coding')
   })
   
   app.listen(port, () => {
