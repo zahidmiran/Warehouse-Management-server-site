@@ -30,7 +30,7 @@ async function run() {
         const email = req.body;
         console.log('abc',email)
   
-        const token = jwt.sign(email, process.env.ACCESS_TOKEN_SECRET);
+        const token = jwt.sign(email, process.env.ACCESS_TOKEN);
   
         res.send({token});
       })
