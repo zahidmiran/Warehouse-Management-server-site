@@ -137,6 +137,43 @@ async function run() {
        }
       })
   
+      
+    // get the partners
+    app.get('/partners', async (req, res)=>{
+        const query = {};
+        const cursor = partnersCollection.find(query);
+        const partnersRevies = await cursor.toArray();
+        res.send(partnersRevies)
+      })
+  
+  
+      app.get('/inventoriesDelevired', async (req, res)=>{
+        const query = {};
+        const cursor = deleveryCollection.find(query);
+        const inventories = await cursor.toArray();
+        res.send(inventories)
+      })
+
+    
+    // get delivered in specific users
+    app.get("/myItems", async(req, res) =>{
+        const tokenInfo = req.headers.authorization;
+  
+        console.log('GET DELIVERED ITEMS CONSOLE TOKEN',tokenInfo);
+        const [email, accessToken] = tokenInfo.split(" ")
+        console.log(email, accessToken)
+  
+        const decoded = verifyToken(accessToken)
+        if(email === decoded.email) {
+          const deleveredStocks = await deleveryCollection.find({email:email}).toArray();
+          res.send(deleveredStocks);
+        }
+        else{
+          res.send({success : 'Unauth Access'});
+        }
+      })
+
+      
 
 
 app.get('/', (req, res) => {
