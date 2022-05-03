@@ -88,6 +88,32 @@ async function run() {
       }
   
 
+    ///* jwt *////
+    app.post('/getToken', async(req, res)=>{
+        const user = req.body;
+        const accessToken = jwt.sign(user, process.env.NEW_ACCESS_TOKEN,{
+          expiresIn: '1d'
+        });
+        res.send({accessToken});
+      })
+  
+      
+      // get delivered using user email when user first register and then login >> then he will see his delivered items
+      app.get('/getdelivered', verifyJWT, async (req, res)=>{
+        const decodedEmail = req.decoded.email;
+        const email = req.query.email;
+       if(email === decodedEmail){
+        const query = {email:email};
+        const cursor = deleveryCollection.find(query);
+        const inventories = await cursor.toArray();
+        res.send(inventories)
+       }
+       else{
+         res.status(403).send({message: "Forbidden Access"});
+       }
+      })
+
+
 
 
 app.get('/', (req, res) => {
