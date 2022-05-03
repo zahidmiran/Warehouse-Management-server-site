@@ -113,7 +113,30 @@ async function run() {
        }
       })
 
-
+      
+    // delivered using name
+    app.post('/deliveredNAME', async (req, res) =>{
+        const orderInfo = req.body;
+        const result = await deleveryCollection.insertOne(orderInfo);
+        res.send(result)
+      });
+  
+      
+    // get delivered using user email when user first register and then login >> then he will see his delivered items
+    app.get('/getdeliveredNAME', verifyJWT, async (req, res)=>{
+        const decodedEmail = req.decoded.email;
+        const email = req.query.email;
+       if(email === decodedEmail){
+        const query = {email:email};
+        const cursor = deleveryCollection.find(query);
+        const inventories = await cursor.toArray();
+        res.send(inventories)
+       }
+       else{
+         res.status(403).send({message: "Forbidden Access"});
+       }
+      })
+  
 
 
 app.get('/', (req, res) => {
