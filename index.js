@@ -38,17 +38,8 @@ async function run() {
        /* ** */
        app.post('/addInventories', async (req, res)=>{
         const newInventories = req.body;
-        // const tokenInfo = req.headers.authorization;
-        // console.log(tokenInfo, 'from when login')
-        // const [email, accessToken] = tokenInfo.split(" ")
-        // const decoded = verifyToken(accessToken)
-        // if(email === decoded?.email){
           const result = await inventoryCollection.insertOne(newInventories);
           res.send({ success: 'Product Upload Successfully' })
-        // }
-        // else{
-          // res.send({success: "Unauthoraized Access"})
-        // }
       })
   
   
@@ -212,14 +203,6 @@ async function run() {
   
     })
   
-      // (find one document) 
-      // app.get('/inventories/:id'), async (req, res)=>{
-      //   const id = req.params.id;
-      //   const query = {_id: ObjectId(id)}
-      //   const inventory = await inventoryCollection.findOne(query);
-      //   res.send(inventory)
-      // }
-      // console.log('single document finded')
   
       /// find single document
       app.get('/service/:id', async (req, res) => {
@@ -228,13 +211,6 @@ async function run() {
         const service = await inventoryCollection.findOne(query);
         res.send(service)
   
-        // Delet Inventories:
-        // app.delete('/inventory/:id', async (req, res) => {
-        //   const id = req.params.id;
-        //   const query = { _id: ObjectId(id) }
-        //   const result = await inventoryCollection.deleteOne(query);
-        //   res.send(result);
-        // })
   
         app.delete('/service/:id', async(req, res)=>{
           const id = req.params.id;
