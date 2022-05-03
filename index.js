@@ -25,6 +25,68 @@ async function run() {
       const deleveryCollection = client.db('inventoriesdb').collection('deleveredStocks');
       const partnersCollection = client.db('inventoriesdb').collection('partners');
   
+      
+    app.post("/login", (req, res) =>{
+        const email = req.body;
+        console.log('abc',email)
+  
+        const token = jwt.sign(email, process.env.ACCESS_TOKEN_SECRET);
+  
+        res.send({token});
+      })
+  
+      
+
+     // add new stocks to mongodb
+     app.post('/addInventories', async (req, res)=>{
+        const newInventories = req.body;
+        // const tokenInfo = req.headers.authorization;
+        // console.log(tokenInfo, 'from when login')
+        // const [email, accessToken] = tokenInfo.split(" ")
+        // const decoded = verifyToken(accessToken)
+        // if(email === decoded?.email){
+          const result = await inventoryCollection.insertOne(newInventories);
+          res.send({ success: 'Product Upload Successfully' })
+        // }
+        // else{
+          // res.send({success: "Unauthoraized Access"})
+        // }
+      })
+  
+      
+    app.get('/inventories', async (req, res) => {
+        const query = {};
+        const cursor = inventoryCollection.find(query);
+        const inventories = await cursor.toArray();
+        res.send(inventories)
+      })
+
+      
+    app.post('/delivered', async (req, res) =>{
+        const orderInfo = req.body;
+        const result = await deleveryCollection.insertOne(orderInfo);
+        res.send({success: 'Inventory Delevered'})
+      });
+  
+  
+    /* JWF functions */
+    function verifyJWT(req, res, next){
+        const authHeader = req.headers.authorization;
+        if(!authHeader){
+          return res.status(401).send({message: 'UnAuthorized Access'});
+        }
+        const token = authHeader.split(' ')[1];
+        jwt.verify(token, process.env.NEW_ACCESS_TOKEN, (err, decoded)=>{
+          if(err){
+            return res.status(403).send({message: 'Forbideen Access'});
+          }
+          console.log('decodec', decoded);
+          req.decoded = decoded;
+          next();
+        })
+  
+      }
+  
 
 
 
