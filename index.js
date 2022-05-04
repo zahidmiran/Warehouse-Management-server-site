@@ -197,10 +197,6 @@ async function run() {
           };
         const result = await inventoryCollection.updateOne(filter, updateDoc, options);
         res.send(result);
-  
-  
-  
-  
     })
   
   
@@ -218,14 +214,7 @@ async function run() {
           const result = await inventoryCollection.deleteOne(query);
           res.send(result);
       });
-      
-   
-           
       })
-  
-
-      
-  
     }
     finally {
   
